@@ -21,6 +21,10 @@ function entriesToList(entries)
 
 export default function menu()
 {
+	return (
+		<nav className={styles.menuButton + ' material-icons'}>menu</nav>
+	)
+	/*
 	let entries =
 	[
 		 {text: 'Home', link: '/'}
@@ -36,4 +40,5 @@ export default function menu()
 			</ol>
 		</nav>
 	)
+	*/
 }
