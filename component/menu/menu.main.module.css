@@ -1,0 +1,44 @@
+.menu
+{
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	margin-left: 2rem;
+	display: flex;
+}
+
+.menuList
+{
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+.menuEntry
+{
+	display: flex;
+	transition: background-color 200ms linear;
+}
+
+.menuEntry:hover
+{
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.menuEntry a
+{
+	padding: 0 0.5rem 0 0.5rem;
+	color: rgba(0, 0, 0, 0.747);
+	font-weight: 999;
+	font-size: 1rem;
+	text-decoration: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

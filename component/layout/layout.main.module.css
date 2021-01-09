@@ -1,0 +1,28 @@
+.container 
+{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.main
+{
+  height: calc(100% - 7rem);
+  margin: 1rem;
+  overflow: auto;
+  /*padding: 1rem 1rem 0;*/
+  padding: 1rem;
+  box-shadow: 1px 7px 32px -5px black;
+}
+
+@media screen and (max-width: 30cm)
+{
+  .main
+  {
+    height: calc(100% - 5rem);
+    margin: 0rem;
+    box-shadow: inherit;
+  }
+}
