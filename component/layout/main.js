@@ -2,7 +2,7 @@ import Head from 'next/head'
 import style from './layout.main.module.css'
 import Header from 'component/header/main'
 
-export const siteTitle = 'Charles DiLaurenzio'
+export const siteTitle = 'CDilz'
 
 export default function Layout({ children, titleOverride }) 
 {
@@ -15,10 +15,6 @@ export default function Layout({ children, titleOverride })
         <title>
           {title}
         </title>
-        <meta
-          name="description"
-          content="Charles DiLaurenzio's Personal Website"
-        />
         <meta
           property="og:image"
           content={`https://og-image.now.sh/${encodeURI(

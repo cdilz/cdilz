@@ -7,26 +7,18 @@
   flex-direction: row;
   width: 100%;
   z-index: 100;
-  /*
-  width: calc(100% - 1rem);
-  height: 3rem;
-	background-color:rgb(255, 144, 53);
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  box-shadow: 1px 7px 18px -5px black;
-  border-bottom: 1px solid rgb(199, 99, 17);
-  padding-left: 1rem;
-  */
+  background-color: black;
 }
 
 .nav
 {
+  margin: 0;
+  padding: 0;
+  border: 0;
   top: 0;
-  width: 5rem;
+  width: 100%;
   height: 5rem;
   background-color: black;
-  box-shadow: 1px 7px 18px -5px black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,10 +26,9 @@
 
 .spacer
 {
-  width: 100%;
-  align-self: stretch;
+  display: none;
 }
-
+  
 .logo
 {
   align-self: flex-start;
@@ -49,4 +40,25 @@
   align-self: flex-end;
   right: 0;
   border-radius: 0 0 0 30px;
+}
+
+@media (min-width:600px)
+{
+  .header
+  {
+    background-color: transparent;
+  }
+
+  .nav
+  {
+    width: 5rem;
+    box-shadow: 1px 7px 18px -5px black;
+  }
+  
+  .spacer
+  {
+    display: inherit;
+    width: 100%;
+    align-self: stretch;
+  }
 }
