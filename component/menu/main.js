@@ -1,4 +1,4 @@
-import styles from './menu.main.module.css'
+import style from './menu.main.module.css'
 import Link from 'next/link'
 
 function entriesToList(entries)
@@ -7,7 +7,7 @@ function entriesToList(entries)
 	for(let i = 0; i < entries.length; i++)
 	{
 		output.push(
-		<li className={styles.menuEntry} key = {i}>
+		<li className={style.menuEntry} key = {i}>
 			<Link href={entries[i].link}>
 				<a>
 					{entries[i].text}
@@ -22,7 +22,7 @@ function entriesToList(entries)
 export default function menu()
 {
 	return (
-		<nav className={styles.menuButton + ' material-icons'}>menu</nav>
+		<nav className={style.menuButton + ' material-icons'}>menu</nav>
 	)
 	/*
 	let entries =

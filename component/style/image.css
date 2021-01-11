@@ -1,0 +1,7 @@
+.cautionTape
+{
+	background-image: url(public/image/cautionTape.png);
+	background-repeat: repeat-x;
+	height: 16px;
+	width: 100%;
+}

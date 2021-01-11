@@ -1,6 +1,6 @@
 import MainLogo from 'component/logo/main'
 import MainMenu from 'component/menu/main'
-import styles from './header.main.module.css'
+import style from './header.main.module.css'
 
 export default function header()
 {
@@ -13,14 +13,14 @@ export default function header()
 	}
 */
 	return (
-		<header className={styles.header + ' noselect'}>
-			<nav className={styles.logo + ' ' + styles.nav}>
+		<header className={style.header + ' noselect'}>
+			<nav className={style.logo + ' ' + style.nav}>
 				<MainLogo/>
 			</nav>
-			<nav className={styles.spacer}>
+			<nav className={style.spacer}>
 
 			</nav>
-			<nav className={styles.menu + ' ' + styles.nav}>
+			<nav className={style.menu + ' ' + style.nav}>
 				<MainMenu/>
 			</nav>
 		</header>

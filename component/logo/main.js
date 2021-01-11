@@ -1,11 +1,11 @@
 import Link from 'next/link'
-import styles from './logo.main.module.css'
+import style from './logo.main.module.css'
 
 export default function logo()
 {
 	return (
 		<Link href='/'>
-			<a className={styles.mainLogo}>
+			<a className={style.mainLogo}>
 				C
 			</a>
 		</Link>

@@ -1,0 +1,10 @@
+.wrapper
+{
+	align-self: center;
+	justify-self: center;
+}
+
+.text
+{
+	white-space: pre-wrap;
+}

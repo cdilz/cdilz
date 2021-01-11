@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from './layout.main.module.css'
+import style from './layout.main.module.css'
 import Header from 'component/header/main'
 
 export const siteTitle = 'Charles DiLaurenzio'
@@ -9,7 +9,7 @@ export default function Layout({ children, titleOverride })
   let title = titleOverride ?? siteTitle
 
   return (
-    <div className={styles.container}>
+    <div className={style.container}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <title>
@@ -28,9 +28,14 @@ export default function Layout({ children, titleOverride })
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <Header className={styles.header}/>
-      <main className={styles.main}>
-        {children}
+      <main className={style.main}>
+      <Header/>
+        <h1 className={style.innerHead}>
+          {title}
+        </h1>
+        <div className={style.inside}>
+          {children}
+        </div>
       </main>
       
     </div>
