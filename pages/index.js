@@ -1,10 +1,6 @@
-import Layout from 'component/layout/main'
+import Layout from 'component/layout/scroll'
 import style from './pages.index.module.css'
-/*
-import { getSortedPostsData } from 'lib/posts'
-import Link from 'next/link'
-import Date from 'components/date'
-*/
+
 let innerText =
 `Hello, and welcome, to my personal website!
 
@@ -26,33 +22,3 @@ export default function page()
     </Layout>
   )
 }
-
-/*
-export async function getStaticProps() {
-  const allPostsData = getSortedPostsData()
-  return {
-    props: {
-      allPostsData
-    }
-  }
-}
-
-
-  <section className={utilStyles.headingMd}>…</section>
-  <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-    <h2 className={utilStyles.headingLg}>Blog</h2>
-    <ul className={utilStyles.list}>
-      {allPostsData.map(({ id, date, title }) => (
-        <li className={utilStyles.listItem} key={id}>
-          <Link href="/posts/[id]" as={`/posts/${id}`}>
-            <a>{title}</a>
-          </Link>
-          <br/ />
-          <small className={utilStyles.lightText}>
-            <Date datesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestring={date} />
-          </small>
-        </li>
-      ))}
-    </ul>
-  </section>
-*/

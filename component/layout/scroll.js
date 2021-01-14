@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import style from './layout.main.module.css'
+import style from './layout.scroll.module.css'
 import Header from 'component/header/main'
 
 export const siteTitle = 'CDilz'
