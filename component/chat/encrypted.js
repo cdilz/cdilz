@@ -123,6 +123,12 @@ export default function chat()
 		user.key = exportedKey
 	}
 
+	async function recieve()
+	{
+		let chats = await fetchPost('/api/chat/recieve', user)
+		return chats
+	}
+
 	async function encrypt(key, message)
 	{
 		let encoder = new TextEncoder()
@@ -145,7 +151,11 @@ export default function chat()
 	}
 
 	createKeys().
-	then(() => login())
+	then(() => login()).
+	then(() =>
+	{
+		setInterval(() => recieve(), 1000)
+	})
 
 
 

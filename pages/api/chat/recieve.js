@@ -9,11 +9,12 @@ let cachedDb = null
 
 // A function for connecting to MongoDB,
 // taking a single parameter of the connection string
-async function connectToDatabase(uri) 
-{
+async function connectToDatabase(uri) {
   // If the database connection is cached,
   // use it instead of creating a new connection
-  if (cachedDb) { return cachedDb }
+  if (cachedDb) {
+    return cachedDb
+  }
 
   // If no connection is cached, create a new one
   const client = await MongoClient.connect(uri, { useNewUrlParser: true })
@@ -67,11 +68,37 @@ module.exports = async (req, res) =>
   // Select the users collection from the database
   // const users = await collection.find({}).toArray()
 
-  collection.update(query, update, config).
-    catch( e => res.status(500).json(e)).
-    then(() => res.status(200).json({}))
+    collection.update(query, update, config
 
-  //res.status(200).json({})
+  )
+
+  
+
+
+
+  /*
+    At this point we need to recieve all messages specifically for this user.
+    We'd get the messages, who's it from, etc.
+  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Respond with a JSON string of all users in the collection
+  //res.status(200).json({ users })
+  res.json(req.body)
 }
 
 /*
@@ -81,4 +108,4 @@ module.exports = async (request, response) =>
   const { body } = req
   res.send({message: `Hello ${body.name}, you just parsed the request body!`})
 }
-*/
+*/ 
