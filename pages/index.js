@@ -12,7 +12,7 @@ export default function page()
 {
   return (
     <Layout titleOverride='Home'>
-      <section className={style.wrapper}>
+      <section className={style.wrapper + ' hover'}>
         <img className='cautionTape'></img>
         <p className={style.text}>
           {innerText}

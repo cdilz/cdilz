@@ -15,22 +15,89 @@ let usage =
 	'encrypt',
 	'decrypt'
 ]
+	
+async function fetchPost(url, data)
+{
+	let response = fetch(url, 
+	{
+		method: 'POST',
+		headers:
+		{
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		},
+		body: JSON.stringify(data)
+	})
+
+	response = await response
+	return response.json()
+}
+	
+function getRand(num)
+{
+	let rand = Math.random().toString()
+	let randStr = rand.replace(/\D/, '')
+	let randBig = BigInt(randStr)
+	num = BigInt(num)
+
+	let output = randBig % num
+	return Number(output)
+}
+
+function arrayPick(arr)
+{
+	return arr[getRand(arr.length)]
+}
+
+function generateName()
+{
+	let prefix = ['Mr', 'Ms', 'Dr']
+	let first = ['Awesome', 'Magnificent', 'Elusive', 'Cool', 'Amazing', 'Vibrant']
+	let middle = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet']
+	let last = ['Axolotl', 'Ostrich', 'Elephant', 'Kitty', 'Puppy', 'Koala', 'Kangaroo', 'Racoon']
+	let of = ['of', 'von']
+	let final = ['Fluffiness', 'Softness', 'Warmness', 'Coolness']
+
+	let nameArr = []
+	nameArr.push(arrayPick(prefix))
+	nameArr.push(arrayPick(first))
+	nameArr.push(arrayPick(middle))
+	nameArr.push(arrayPick(last))
+	nameArr.push(arrayPick(of))
+	nameArr.push(arrayPick(final))
+
+	return nameArr.join('_')
+}
+
+function generateColor()
+{
+	let colors = 
+	[
+		'black',
+		'gray',
+		'maroon',
+		'red',
+		'purple',
+		'fuchsia',
+		'green',
+		'olive',
+		'navy',
+		'blue',
+		'teal',
+		'hotpink'
+	]
+	
+	return arrayPick(colors)
+}
 
 
 export default function chat()
-{
-	let keypair =
-	{
-		public: null,
-		private: null
-	}
-	
-	let wcs = null
-	
+{	
 	let user =
 	{
 		name: '',
-		color: ''
+		color: '',
+		key: ''
 	}
 
 	let jsxColorStyle = 
@@ -38,104 +105,56 @@ export default function chat()
 		color: ''
 	}
 	
-	if(typeof window !== typeof undefined)
+	let keypair =
 	{
+		public: null,
+		private: null
+	}
 	
-		wcs = window.crypto.subtle
-	
-		async function createKeys()
-		{
-			let keys = await wcs.generateKey(algo, extract, usage)
-			keypair.public = keys.publicKey
-			keypair.private = keys.privateKey
-		}
-	
-		async function encrypt(key, message)
-		{
-			let encoder = new TextEncoder()
-			message = encoder.encode(message)
-			return await wcs.encrypt(algo, key, message)
-		}
-	
-		async function decrypt(message)
-		{
-			message = await wcs.decrypt(algo, keypair.private, message)
-			let decoder = new TextDecoder()
-			message = decoder.decode(message)
-			return message
-		}
-	
-		async function login()
-		{
+	let wcs = window.crypto.subtle
 
-		}
-	
-		document.addEventListener('DOMContentLoaded', login, false)
-	
-	
-	
-		createKeys().
-		then(() => encrypt(keypair.public, 'test')).
-		then(res => decrypt(res)).
-		then(res => console.log(res))
-	}
-	
-	function getRand(num)
+	async function createKeys()
 	{
-		let rand = Math.random().toString()
-		let randStr = rand.replace(/\D/, '')
-		let randBig = BigInt(randStr)
-		num = BigInt(num)
-	
-		let output = randBig % num
-		return Number(output)
+		let keys = await wcs.generateKey(algo, extract, usage)
+		keypair.public = keys.publicKey
+		keypair.private = keys.privateKey
+
+		let exportedKey = await wcs.exportKey('jwk', keys.publicKey)
+		user.key = exportedKey
 	}
-	
-	function arrayPick(arr)
+
+	async function encrypt(key, message)
 	{
-		return arr[getRand(arr.length)]
+		let encoder = new TextEncoder()
+		message = encoder.encode(message)
+		return await wcs.encrypt(algo, key, message)
 	}
-	
-	function generateName()
+
+	async function decrypt(message)
 	{
-		let prefix = ['Mr', 'Ms', 'Dr']
-		let first = ['Awesome', 'Magnificent', 'Elusive', 'Cool', 'Amazing', 'Vibrant']
-		let middle = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet']
-		let last = ['Axolotl', 'Ostrich', 'Elephant', 'Kitty', 'Puppy', 'Koala', 'Kangaroo', 'Racoon']
-		let of = ['of', 'von']
-		let final = ['Fluffiness', 'Softness', 'Warmness', 'Coolness']
-	
-		let nameArr = []
-		nameArr.push(arrayPick(prefix))
-		nameArr.push(arrayPick(first))
-		nameArr.push(arrayPick(middle))
-		nameArr.push(arrayPick(last))
-		nameArr.push(arrayPick(of))
-		nameArr.push(arrayPick(final))
-	
-		return nameArr.join('_')
+		message = await wcs.decrypt(algo, keypair.private, message)
+		let decoder = new TextDecoder()
+		message = decoder.decode(message)
+		return message
 	}
-	
-	function generateColor()
+
+	async function login()
 	{
-		let colors = 
-		[
-			'black',
-			'gray',
-			'maroon',
-			'red',
-			'purple',
-			'fuchsia',
-			'green',
-			'olive',
-			'navy',
-			'blue',
-			'teal',
-			'hotpink'
-		]
-		
-		return arrayPick(colors)
+		let output = await fetchPost('/api/chat/login', user)
+		return output
 	}
+
+	createKeys().
+	then(() => login())
+
+
+
+	/*
+	createKeys().
+	then(() => encrypt(keypair.public, 'test')).
+	then(res => decrypt(res)).
+	then(res => console.log(res))
+	*/
 	
 	function setNameAndColor()
 	{
@@ -145,23 +164,6 @@ export default function chat()
 		jsxColorStyle.color = user.color
 	}
 	
-	
-	async function fetchPost(url, data)
-	{
-		let response = fetch(url, 
-		{
-			method: 'POST',
-			headers:
-			{
-				'Content-Type': 'application/json',
-				'Accept': 'application/json'
-			},
-			body: JSON.stringify(data)
-		})
-	
-		response = await response
-		return response.json()
-	}
 	
 	function sendMessage()
 	{

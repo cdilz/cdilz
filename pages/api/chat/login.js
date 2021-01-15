@@ -38,12 +38,43 @@ module.exports = async (req, res) => {
   // Select the "users" collection from the database
   const collection = await db.collection('login')
 
+  let input = req.body
+  
+  let query =
+  {
+    key: input.key
+  }
+
+  let update =
+  {
+    $currentDate:
+    {
+      modified: true
+    },
+    $set:
+    {
+      name: input.name,
+      color: input.color,
+      key: input.key
+    }
+  }
+
+  let config = 
+  {
+    upsert: true
+  }
+
   // Select the users collection from the database
-  const users = await collection.find({}).toArray()
+  // const users = await collection.find({}).toArray()
+
+    collection.update(query, update, config
+
+  )
 
 
   // Respond with a JSON string of all users in the collection
-  res.status(200).json({ users })
+  //res.status(200).json({ users })
+  res.json(req.body)
 }
 
 /*

@@ -1,5 +1,8 @@
 import Layout from 'component/layout/flex'
-import Chat from 'component/chat/encrypted.js'
+//import Chat from 'component/chat/encrypted.js'
+import Dynamic from 'next/dynamic'
+let Chat = Dynamic(() => import('component/chat/encrypted.js'), {ssr: false})
+
 import style from './pages.index.module.css'
 
 
