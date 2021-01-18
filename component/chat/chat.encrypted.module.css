@@ -16,6 +16,42 @@
 {
 	border: 1px solid black;
 	height: 100%;
+	white-space: pre-wrap;
+	overflow: auto;
+}
+
+.textWindow > div
+{
+	width: 100%;
+	overflow-wrap: break-word;
+	white-space: pre-wrap;
+	margin-bottom: 1rem;
+}
+
+.textWindow > div > div
+{
+	display: flex;
+	flex-direction: column;
+	border-bottom: black 1px solid;
+}
+
+@media (min-width:600px)
+{
+
+	.textWindow > div > div
+	{
+		flex-direction: row;
+	}
+}
+
+.textWindow > div > div > div
+{
+	margin-right: 1rem;
+}
+
+.textWindow > div > div > time
+{
+	font-weight: bolder;
 }
 
 .textArea

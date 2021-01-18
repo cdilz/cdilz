@@ -18,19 +18,30 @@ let usage =
 	
 async function fetchPost(url, data)
 {
-	let response = fetch(url, 
+	try
 	{
-		method: 'POST',
-		headers:
+		let response = fetch(url, 
 		{
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-		},
-		body: JSON.stringify(data)
-	})
-
-	response = await response
-	return response.json()
+			method: 'POST',
+			headers:
+			{
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+	
+		response = await response
+		if(!response.ok)
+		{
+			throw Error(response.statusText)
+		}
+		return response.json()
+	}
+	catch(e)
+	{
+		throw e
+	}
 }
 	
 function getRand(num)
@@ -90,14 +101,22 @@ function generateColor()
 	return arrayPick(colors)
 }
 
+function dateToString(date)
+{
+	return date.toLocaleString()	
+}
+
 
 export default function chat()
 {	
+	let intervalID = null
+
 	let user =
 	{
 		name: '',
 		color: '',
-		key: ''
+		key: '',
+		lastRecieve: new Date()
 	}
 
 	let jsxColorStyle = 
@@ -125,7 +144,45 @@ export default function chat()
 
 	async function recieve()
 	{
+		let chatWindow = document.querySelector('.chatWindow')
+
+		if(chatWindow == null)
+		{
+			clearInterval(intervalID)
+			return
+		}
+
+		let newRecieve = new Date()
 		let chats = await fetchPost('/api/chat/recieve', user)
+		user.lastRecieve = newRecieve
+
+		for(let i = 0; i < chats.length; i++)
+		{
+			let message = await decrypt(chats[i].message)
+			let sent = dateToString(new Date(chats[i].sent))
+			let timeNode = document.createElement('time')
+			let timeTextNode = document.createTextNode(sent)
+			timeNode.appendChild(timeTextNode)
+			
+			let line = document.createElement('div')
+
+			let nameNode = document.createElement('div')
+			nameNode.style.color = chats[i].color
+			nameNode.style.fontWeight = 'bolder'
+			let nameTextNode = document.createTextNode(chats[i].name)
+			nameNode.appendChild(nameTextNode)
+			
+			let messageTextNode = document.createTextNode(message)
+
+			let upperWrapper = document.createElement('div')
+
+			upperWrapper.appendChild(nameNode)
+			upperWrapper.appendChild(timeNode)
+			line.appendChild(upperWrapper)
+			line.appendChild(messageTextNode)
+			chatWindow.appendChild(line)
+		}
+
 		return chats
 	}
 
@@ -133,15 +190,16 @@ export default function chat()
 	{
 		let encoder = new TextEncoder()
 		message = encoder.encode(message)
-		return await wcs.encrypt(algo, key, message)
+		let encMessage = await wcs.encrypt(algo, key, message)
+		return atob(btoa(new Uint8Array(encMessage)))
 	}
 
 	async function decrypt(message)
 	{
-		message = await wcs.decrypt(algo, keypair.private, message)
+		message = new Uint8Array(message.split(',').map(Number))
 		let decoder = new TextDecoder()
-		message = decoder.decode(message)
-		return message
+		let decMessage = await wcs.decrypt(algo, keypair.private, message)
+		return decoder.decode(decMessage)
 	}
 
 	async function login()
@@ -152,20 +210,11 @@ export default function chat()
 
 	createKeys().
 	then(() => login()).
-	then(() =>
+	then(async () =>
 	{
-		setInterval(() => recieve(), 1000)
+		intervalID = setInterval(() => recieve(), 1000)
 	})
 
-
-
-	/*
-	createKeys().
-	then(() => encrypt(keypair.public, 'test')).
-	then(res => decrypt(res)).
-	then(res => console.log(res))
-	*/
-	
 	function setNameAndColor()
 	{
 		user.name = generateName()
@@ -175,9 +224,43 @@ export default function chat()
 	}
 	
 	
-	function sendMessage()
+	async function sendMessage()
 	{
-		fetchPost('/api/chat/send', {name: 'testName'})
+		let users = await fetchPost('/api/chat/users', user)
+		let chatBox = document.querySelector('.chatBox')
+		let message = chatBox.value
+		let messages = []
+
+		for(let i = 0; i < users.length; i++)
+		{
+			let importedKey = await wcs.importKey('jwk', users[i].key, algo, extract, ['encrypt'])
+			let encMessage = await encrypt(importedKey, message)
+			let messageObj =
+			{
+				name: user.name,
+				color: user.color,
+				message: encMessage,
+				key: users[i].key
+			}
+			messages.push(messageObj)
+		}
+
+		fetchPost('/api/chat/send', messages).
+			catch(() => 
+			{
+				alert('Your session has timed out.\n\nThe page will now be refreshed and you will be given a brand new identity.')
+				window.location = window.location
+			})
+
+		chatBox.value = ''
+	}
+
+	function checkForEnter(e)
+	{
+		if(e.key.toLowerCase() == 'enter')
+		{
+			sendMessage()
+		}
 	}
 
 
@@ -187,20 +270,16 @@ export default function chat()
 	return (
 		<section className={style.container}>
 			<header>
-        <img className='cautionTape'></img>
-				Work in progress.
-
-				Fully encrypted and anonymous messaging. Your browser generates your keys. Messages are deleted every 30 seconds in db.
-        <img className='cautionTape'></img>
+				Fully encrypted and anonymous messaging. Your browser generates your keys. Messages self-destruct when recieved or after a minute. Chat updates once a second.
 			</header>
-			<div className={style.textWindow}>
+			<div className={style.textWindow + ' chatWindow'}>
 
 			</div>
 			<p className={style.loginInfo + ' loginInfo'}>
 				Your name will be displayed as: <span style={jsxColorStyle}> {user.name} </span>
 			</p>
 			<div className={style.textArea}>
-				<input type='text' className={style.textInput + ' chatBox'} placeholder='Type your message here and hit enter to send'></input>
+				<input type='text' className={style.textInput + ' chatBox'} placeholder='Type your message here and hit enter to send' onKeyPress={checkForEnter}></input>
 			</div>
 		</section>
 	)

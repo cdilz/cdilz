@@ -4,9 +4,9 @@ import style from './pages.index.module.css'
 let innerText =
 `Hello, and welcome, to my personal website!
 
-This is the main landing page, when it's implemented the botton on the top right will be your menu into a realm of unknown possibilities! Mostly because I haven't put anything there as of writing this and I'm not sure what I want to make.
+Please use the menu at the top right to navigate around.
 
-Digressions aside: I hope you enjoy your stay!`
+There's not much here yet, but I hope you'll enjoy what I have nonetheless!`
 
 export default function page()
 {

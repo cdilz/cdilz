@@ -1,111 +1,99 @@
 // https://vercel.com/guides/deploying-a-mongodb-powered-api-with-node-and-vercel
 
-// Import Dependencies
 const url = require('url')
 const MongoClient = require('mongodb').MongoClient
 
-// Create cached connection variable
-let cachedDb = null
-
-// A function for connecting to MongoDB,
-// taking a single parameter of the connection string
-async function connectToDatabase(uri) {
-  // If the database connection is cached,
-  // use it instead of creating a new connection
-  if (cachedDb) {
-    return cachedDb
-  }
-
-  // If no connection is cached, create a new one
-  const client = await MongoClient.connect(uri, { useNewUrlParser: true })
-
-  // Select the database through the connection,
-  // using the database path of the connection string
-  const db = await client.db(url.parse(uri).pathname.substr(1))
-
-  // Cache the database connection and return the connection
-  cachedDb = db
-  return db
-}
-
-// The main, exported, function of the endpoint,
-// dealing with the request and subsequent response
 module.exports = async (req, res) => 
 {
-  // Get a database connection, cached or otherwise,
-  // using the connection string environment variable as the argument
-  const db = await connectToDatabase(process.env.MONGO_LOGIN)
-
-  // Select the "users" collection from the database
-  const collection = await db.collection('login')
-
-  let input = req.body
-  
-  let query =
+  let client = await MongoClient.connect(process.env.MONGO_LOGIN, { useNewUrlParser: true })
+  let db = await client.db(url.parse(process.env.MONGO_LOGIN).pathname.substr(1))
+  try
   {
-    key: input.key
-  }
+    let loginCollection = await db.collection('login')
+    let messageCollection = await db.collection('message')
 
-  let update =
-  {
-    $currentDate:
+    let input = req.body
+    
+    let query =
     {
-      modified: true
-    },
-    $set:
-    {
-      name: input.name,
-      color: input.color,
       key: input.key
     }
-  }
 
-  let config = 
+    let update =
+    {
+      $currentDate:
+      {
+        modified: true
+      },
+      $set:
+      {
+        name: input.name,
+        color: input.color,
+        key: input.key
+      }
+    }
+
+    let config = 
+    {
+      upsert: true
+    }
+
+    loginCollection.updateOne(query, update, config)
+
+    
+
+
+
+    /*
+      At this point we need to recieve all messages specifically for this user.
+      We'd get the messages, who's it from, etc.
+    */
+
+    let messageQuery =
+    {
+      key: input.key,
+      sent: 
+        {
+          $gte: new Date(input.lastRecieve)
+        }
+    }
+
+    let messages = await messageCollection.find(messageQuery).sort({sent: 1}).toArray()
+    
+    res.status(200).json(messages)
+
+    let ids = []
+    for(let i = 0; i < messages.length; i++)
+    {
+      let message = messages[i]
+      ids.push(message['_id'])
+    }
+
+    let deleteQuery =
+    {
+      _id:
+      {
+        $in: ids
+      }
+    }
+
+    messageCollection.deleteMany(deleteQuery)
+  }
+  catch (e)
   {
-    upsert: true
+    res.status(500).json(e)
   }
-
-  // Select the users collection from the database
-  // const users = await collection.find({}).toArray()
-
-    collection.update(query, update, config
-
-  )
-
-  
-
-
-
-  /*
-    At this point we need to recieve all messages specifically for this user.
-    We'd get the messages, who's it from, etc.
-  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Respond with a JSON string of all users in the collection
-  //res.status(200).json({ users })
-  res.json(req.body)
+  finally
+  {
+    client.close()
+  }
 }
 
 /*
 module.exports = async (request, response) => 
 {
-  console.log(res)
+  (res)
   const { body } = req
   res.send({message: `Hello ${body.name}, you just parsed the request body!`})
 }
-*/ 
+*/
