@@ -1,8 +1,0 @@
-{
-	"name": "cdilz",
-	"version": 1,
-	"env":
-	{
-		"MONGO_LOGIN": "@mongologin"
-	}
-}
