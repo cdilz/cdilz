@@ -11,7 +11,7 @@ export default function page()
         </p>
       </section>
 
-			<section className={style.socialLinks + ' hover'}>
+			<section className={'wrapper hover'}>
 				<a className={style.siteLink + ' nodecoration'} href='https://github.com/cdilz' target='_blank'>
 					<img src='image/invisible.png' className={style.socialLogo + ' githubMiniDark'}></img>
 					<p className={style.socialText}>
