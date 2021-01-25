@@ -48,7 +48,8 @@ export default function menu()
 	let entries =
 	[
 		 {text: 'Home', link: '/'},
-		 {text: 'Chat', link: '/chat'}
+		 {text: 'Chat', link: '/chat'},
+		 {text: 'About', link: '/about'}
 	]
 	let list = entriesToList(entries)
 	

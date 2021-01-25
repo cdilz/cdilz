@@ -1,0 +1,40 @@
+@media (min-width:600px)
+{
+	.socialLinks
+	{
+		margin: 2rem;
+	}
+}
+
+.socialLogo
+{
+	width: 4rem;
+	height: 4rem;
+}
+
+.siteLink
+{
+	padding: 1rem;
+	display: flex;
+	flex-direction: row;
+}
+
+.siteLink:hover
+{
+	background-color: rgb(221, 221, 221);
+}
+
+.socialText
+{
+	padding: 0;
+	padding-left: 1rem;
+	font-size: 300%;
+	font-weight: bolder;
+	line-height: 100%;
+}
+
+.socialLinks
+{
+	display: flex;
+	flex-direction: column;
+}

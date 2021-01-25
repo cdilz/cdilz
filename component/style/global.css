@@ -21,6 +21,11 @@ body
 	user-select: none;
 }
 
+.nodecoration
+{
+  text-decoration: none;
+}
+
 p
 {
   margin: 0;
@@ -45,4 +50,20 @@ p
                 0.5rem -0.5rem 1rem 0rem rgba(0, 0, 0, 0.20)*/;
 
   }
+}
+.wrapper
+{
+	display: flex;
+	flex-direction: column;
+	align-self: center;
+	justify-self: center;
+}
+
+
+@media (min-width:600px)
+{
+	.wrapper
+	{
+		margin: 2rem;
+	}
 }
