@@ -1,15 +1,16 @@
 import Layout from 'component/layout/scroll'
-import style from './pages.games.village.module.css'
+import Dynamic from 'next/dynamic'
+
+//let Game = Dynamic(() => import('component/games/village.js'), {ssr: false})
+import Game from 'component/games/village.js'
 
 export default function page()
 {
   return (
-    <Layout titleOverride='About'>
-      <section className={'wrapper hover'}>
-        <p className={style.text}>
-          Nothing here in this commit!
-        </p>
-      </section>
+    <Layout titleOverride='Village'>
+			<Game>
+
+			</Game>
 		</Layout>
   )
 }
