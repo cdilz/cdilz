@@ -1,0 +1,26 @@
+.gameContainer
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.gameButton
+{
+	margin: 1rem;
+	padding: 1rem;
+	font-weight: bolder;
+	background-color: rgb(209, 243, 211);
+	text-decoration: none;
+	transition: background-color 100ms linear;
+}
+
+.gameButton:hover
+{
+	background-color: rgb(163, 206, 166);
+}
+
+.gameButton:visited, .gameButton:link
+{
+	color: inherit;
+}

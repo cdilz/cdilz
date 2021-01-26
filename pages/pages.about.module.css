@@ -9,11 +9,17 @@
 	padding: 1rem;
 	display: flex;
 	flex-direction: row;
+	transition: background-color 100ms linear;
 }
 
 .siteLink:hover
 {
 	background-color: rgb(221, 221, 221);
+}
+
+.siteLink:visited, .siteLink:link
+{
+	color: inherit;
 }
 
 .socialText
