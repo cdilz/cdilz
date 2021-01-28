@@ -17,9 +17,6 @@ export default function header()
 			<nav className={style.logo + ' ' + style.nav}>
 				<MainLogo/>
 			</nav>
-			<nav className={style.spacer}>
-
-			</nav>
 			<nav className={style.menu + ' ' + style.nav}>
 				<MainMenu/>
 			</nav>

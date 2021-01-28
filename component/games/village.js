@@ -18,7 +18,7 @@ export default function page()
 					Build
 				</button>
 			</nav>
-      <section className={style.gameTile + ' ' + style.townHall}>
+      <section className={style.gameTile + ' ' + style.townHall + ' townHall'}>
         <div>
 					{'Town Hall\n'.repeat(1000)}
 				</div>
