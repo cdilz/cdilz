@@ -18,7 +18,7 @@ export default function page()
 						cdilz
 					</p>
 				</a>
-				<a className={style.siteLink + ' nodecoration'} href='https://www.linkedin.com/in/charles-dilaurenzio-45786445/' target='_blank'>
+				<a className={style.siteLink + ' nodecoration'} href='www.linkedin.com/in/cdilz' target='_blank'>
 					<img src='image/invisible.png' className={style.socialLogo + ' linkedInMini'}></img>
 					<p className={style.socialText}>
 						Charles DiLaurenzio

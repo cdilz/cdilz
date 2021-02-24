@@ -6,6 +6,7 @@ export default function page()
   return (
     <section>
 			<Head>
+				<script type='text/javascript' src='/script/games/village/state.js'></script>
 				<script type='text/javascript' src='/script/games/village/population.js'></script>
 				<script type='text/javascript' src='/script/games/village/game.js'></script>
 				<script type='text/javascript' src='/script/games/village/main.js'></script>
