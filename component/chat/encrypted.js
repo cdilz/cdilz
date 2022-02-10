@@ -203,8 +203,7 @@ export default function chat()
 
 	async function login()
 	{
-		let output = await fetchPost('/api/chat/login', user)
-		return output
+		return fetchPost('/api/chat/login', user)
 	}
 
 	createKeys().

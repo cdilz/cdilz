@@ -5,10 +5,11 @@ const MongoClient = require('mongodb').MongoClient
 
 module.exports = async (req, res) => 
 {
-  let client = await MongoClient.connect(process.env.MONGO_LOGIN, { useNewUrlParser: true })
-  let db = await client.db(url.parse(process.env.MONGO_LOGIN).pathname.substr(1))
+  let client
   try
   {
+    client = await MongoClient.connect(process.env.MONGO_LOGIN, { useNewUrlParser: true })
+    let db = await client.db(url.parse(process.env.MONGO_LOGIN).pathname.substr(1))
     let loginCollection = await db.collection('login')
     let messageCollection = await db.collection('message')
 
@@ -38,11 +39,7 @@ module.exports = async (req, res) =>
       upsert: true
     }
 
-    loginCollection.updateOne(query, update, config)
-
-    
-
-
+    await loginCollection.updateOne(query, update, config)
 
     /*
       At this point we need to recieve all messages specifically for this user.
@@ -59,8 +56,6 @@ module.exports = async (req, res) =>
     }
 
     let messages = await messageCollection.find(messageQuery).sort({sent: 1}).toArray()
-    
-    res.status(200).json(messages)
 
     let ids = []
     for(let i = 0; i < messages.length; i++)
@@ -77,7 +72,9 @@ module.exports = async (req, res) =>
       }
     }
 
-    messageCollection.deleteMany(deleteQuery)
+    await messageCollection.deleteMany(deleteQuery)
+    
+    res.status(200).json(messages)
   }
   catch (e)
   {
@@ -85,7 +82,10 @@ module.exports = async (req, res) =>
   }
   finally
   {
-    client.close()
+    if(typeof client != typeof undefined)
+    {
+      client.close()
+    }
   }
 }
 
