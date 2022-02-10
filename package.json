@@ -8,10 +8,10 @@
     "start": "next start"
   },
   "dependencies": {
-    "material-design-icons": "latest",
-    "mongodb": "latest",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest"
+    "material-design-icons": "^3.0.1",
+    "mongodb": "^4.3.1",
+    "next": "^12.0.10",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

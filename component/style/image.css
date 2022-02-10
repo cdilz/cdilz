@@ -1,6 +1,6 @@
 .cautionTape
 {
-	background-image: url(public/image/cautionTape.png);
+	background-image: url(/image/cautionTape.png);
 	background-repeat: repeat-x;
 	height: 16px;
 	width: 100%;
@@ -8,37 +8,37 @@
 
 .linkedInMini
 {
-	background-image: url(public/image/logo/linkedin/mini.png);
+	background-image: url(/image/logo/linkedin/mini.png);
 	background-size: cover;
 }
 
 .linkedInFull
 {
-	background-image: url(public/image/logo/linkedin/full.png);
+	background-image: url(/image/logo/linkedin/full.png);
 	background-size: cover;
 }
 
 .githubMiniDark
 {
-	background-image: url(public/image/logo/github/dark/mini.png);
+	background-image: url(/image/logo/github/dark/mini.png);
 	background-size: cover;
 }
 
 .githubFullDark
 {
-	background-image: url(public/image/logo/github/dark/full.png);
+	background-image: url(/image/logo/github/dark/full.png);
 	background-size: cover;
 }
 
 .githubMiniLight
 {
-	background-image: url(public/image/logo/github/light/mini.png);
+	background-image: url(/image/logo/github/light/mini.png);
 	background-size: cover;
 }
 
 .githubFullLight
 {
-	background-image: url(public/image/logo/github/light/full.png);
+	background-image: url(/image/logo/github/light/full.png);
 	background-size: cover;
 }
 

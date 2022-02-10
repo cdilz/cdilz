@@ -20,7 +20,7 @@ async function fetchPost(url, data)
 {
 	try
 	{
-		let response = fetch(url, 
+		let response = await fetch(url, 
 		{
 			method: 'POST',
 			headers:
@@ -31,7 +31,6 @@ async function fetchPost(url, data)
 			body: JSON.stringify(data)
 		})
 	
-		response = await response
 		if(!response.ok)
 		{
 			throw Error(response.statusText)
@@ -116,7 +115,7 @@ export default function chat()
 		name: '',
 		color: '',
 		key: '',
-		lastRecieve: new Date()
+		lastreceive: new Date()
 	}
 
 	let jsxColorStyle = 
@@ -142,7 +141,7 @@ export default function chat()
 		user.key = exportedKey
 	}
 
-	async function recieve()
+	async function receive()
 	{
 		let chatWindow = document.querySelector('.chatWindow')
 
@@ -152,9 +151,9 @@ export default function chat()
 			return
 		}
 
-		let newRecieve = new Date()
-		let chats = await fetchPost('/api/chat/recieve', user)
-		user.lastRecieve = newRecieve
+		let newreceive = new Date()
+		let chats = await fetchPost('/api/chat/receive', user)
+		user.lastreceive = newreceive
 
 		for(let i = 0; i < chats.length; i++)
 		{
@@ -212,7 +211,7 @@ export default function chat()
 	then(() => login()).
 	then(async () =>
 	{
-		intervalID = setInterval(() => recieve(), 1000)
+		intervalID = setInterval(() => receive(), 1000)
 	})
 
 	function setNameAndColor()
@@ -270,7 +269,7 @@ export default function chat()
 	return (
 		<section className={style.container}>
 			<header>
-				Fully encrypted and anonymous messaging. Your browser generates your keys. Messages self-destruct when recieved or after a minute. Chat updates once a second.
+				Fully encrypted and anonymous messaging. Your browser generates your keys. Messages self-destruct when received or after a minute. Chat updates once a second.
 			</header>
 			<div className={style.textWindow + ' chatWindow'}>
 
