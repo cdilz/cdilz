@@ -8,7 +8,7 @@ module.exports = async (req, res) =>
   let client
   try
   {
-    client = await MongoClient.connect(process.env.MONGO_LOGIN, { useNewUrlParser: true })
+    client = await MongoClient.connect(process.env.MONGO_LOGIN)
     let db = await client.db(url.parse(process.env.MONGO_LOGIN).pathname.substr(1))
     let loginCollection = await db.collection('login')
     let messageCollection = await db.collection('message')

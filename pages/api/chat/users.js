@@ -5,7 +5,7 @@ const MongoClient = require('mongodb').MongoClient
 
 module.exports = async (req, res) => 
 {
-  let client = await MongoClient.connect(process.env.MONGO_LOGIN, { useNewUrlParser: true })
+  let client = await MongoClient.connect(process.env.MONGO_LOGIN)
   let db = await client.db(url.parse(process.env.MONGO_LOGIN).pathname.substr(1))
 	try
 	{
