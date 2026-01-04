@@ -32,11 +32,11 @@ function entriesToList(entries)
 	{
 		output.push(
 		<li className={style.menuEntry} key = {i} onClick={hideMenu}>
-			<Link href={entries[i].link}>
-				<a className='mainMenuLink'>
-					{entries[i].text}
-				</a>
-			</Link>
+			<Link href={entries[i].link} className='mainMenuLink'>
+
+                {entries[i].text}
+
+            </Link>
 		</li>
 		)
 	}
@@ -55,15 +55,15 @@ export default function menu()
 	let list = entriesToList(entries)
 	
 	return (
-		<nav className={style.menuContainer}>
-			<nav className={style.menuButton + ' material-icons mainMenuButton'} onClick={displayMenu}>menu</nav>
-			<nav className={style.fullscreenMenuContainer + ' mainMenuContainer'} onClick={confirmAndHideClickMenuContainer}>
+        <nav className={style.menuContainer}>
+            <nav className={style.menuButton + ' material-icons mainMenuButton'} onClick={displayMenu}>menu</nav>
+            <nav className={style.fullscreenMenuContainer + ' mainMenuContainer'} onClick={confirmAndHideClickMenuContainer}>
 				<nav className={style.menuBox}>
 					<h1 className={style.menuHeader + ' mainMenuLink'} onClick={hideMenu}>
 						<Link href='/'>
-							<a>
+							
 								CDilz
-							</a>
+							
 						</Link>
 					</h1>
 					<ol className={style.menuList}>
@@ -71,7 +71,6 @@ export default function menu()
 					</ol>
 				</nav>
 			</nav>
-		</nav>
-		
-	)
+        </nav>
+    );
 }

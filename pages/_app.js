@@ -1,3 +1,4 @@
+import 'material-design-icons/iconfont/material-icons.css'
 import 'component/style/global.css'
 import 'component/style/image.css'
 
