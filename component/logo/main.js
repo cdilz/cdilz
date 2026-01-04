@@ -4,10 +4,9 @@ import style from './logo.main.module.css'
 export default function logo()
 {
 	return (
-		<Link href='/'>
-			<a className={style.mainLogo}>
-				C
-			</a>
-		</Link>
-	)
+        <Link href='/' className={style.mainLogo}>
+            C
+                        
+        </Link>
+    );
 }

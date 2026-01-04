@@ -48,11 +48,11 @@ function generateGameButtons(entries)
 	{
 		let entry = entries[i]
 		output.push(
-			<Link href={entry.path}>
-				<a className={style.gameButton + ' hover'}>
-					{entry.name}
-				</a>
-			</Link>
+			<Link href={entry.path} className={style.gameButton + ' hover'}>
+
+                {entry.name}
+
+            </Link>
 		)
 	}
 
