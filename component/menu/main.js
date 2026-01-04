@@ -1,3 +1,5 @@
+'use client'
+
 import style from './menu.main.module.css'
 import Link from 'next/link'
 
@@ -28,18 +30,16 @@ function hideMenu()
 function entriesToList(entries)
 {
 	let output = []
-	for(let i = 0; i < entries.length; i++)
-	{
+	entries.forEach((entry, index) => {
 		output.push(
-		<li className={style.menuEntry} key = {i} onClick={hideMenu}>
-			<Link href={entries[i].link}>
-				<a className='mainMenuLink'>
-					{entries[i].text}
-				</a>
+		<li className={style.menuEntry} key={index} onClick={hideMenu}>
+			<Link href={entry.link} className='mainMenuLink'>
+				{entry.text}
 			</Link>
 		</li>
 		)
-	}
+	})
+
 	return output
 }
 
@@ -61,9 +61,7 @@ export default function menu()
 				<nav className={style.menuBox}>
 					<h1 className={style.menuHeader + ' mainMenuLink'} onClick={hideMenu}>
 						<Link href='/'>
-							<a>
-								CDilz
-							</a>
+							CDilz
 						</Link>
 					</h1>
 					<ol className={style.menuList}>

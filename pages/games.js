@@ -1,4 +1,4 @@
-import Layout from 'component/layout/scroll'
+import Layout from 'component/layout/Scroll'
 import style from './pages.games.module.css'
 import fs from 'fs'
 import path from 'path'
@@ -44,17 +44,10 @@ function splitAtUpper(input)
 function generateGameButtons(entries)
 {
 	let output = []
-	for(let i = 0; i < entries.length; i++)
-	{
-		let entry = entries[i]
-		output.push(
-			<Link href={entry.path}>
-				<a className={style.gameButton + ' hover'}>
-					{entry.name}
-				</a>
-			</Link>
-		)
-	}
+	entries.forEach((entry, index) => {
+		const class_name = style.gameButton + ' hover'
+		output.push(<Link href={entry.path} key={index} className={class_name}> {entry.name} </Link>)
+	})
 
 	return output
 }

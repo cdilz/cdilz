@@ -1,4 +1,4 @@
-import Layout from 'component/layout/scroll'
+import Layout from 'component/layout/Scroll'
 import Dynamic from 'next/dynamic'
 
 //let Game = Dynamic(() => import('component/games/village.js'), {ssr: false})

@@ -1,3 +1,5 @@
+'use client'
+
 import style from './chat.encrypted.module.css'
 
 let algo =
@@ -131,6 +133,10 @@ export default function chat()
 	
 	let wcs = window.crypto.subtle
 
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
 	async function createKeys()
 	{
 		let keys = await wcs.generateKey(algo, extract, usage)
@@ -147,39 +153,38 @@ export default function chat()
 
 		if(chatWindow == null)
 		{
-			clearInterval(intervalID)
 			return
 		}
 
-		let newreceive = new Date()
-		let chats = await fetchPost('/api/chat/receive', user)
-		user.lastreceive = newreceive
-
-		for(let i = 0; i < chats.length; i++)
-		{
-			let message = await decrypt(chats[i].message)
-			let sent = dateToString(new Date(chats[i].sent))
-			let timeNode = document.createElement('time')
-			let timeTextNode = document.createTextNode(sent)
-			timeNode.appendChild(timeTextNode)
-			
-			let line = document.createElement('div')
-
-			let nameNode = document.createElement('div')
-			nameNode.style.color = chats[i].color
-			nameNode.style.fontWeight = 'bolder'
-			let nameTextNode = document.createTextNode(chats[i].name)
-			nameNode.appendChild(nameTextNode)
-			
-			let messageTextNode = document.createTextNode(message)
-
-			let upperWrapper = document.createElement('div')
-
-			upperWrapper.appendChild(nameNode)
-			upperWrapper.appendChild(timeNode)
-			line.appendChild(upperWrapper)
-			line.appendChild(messageTextNode)
-			chatWindow.appendChild(line)
+		const chats = await fetchPost('/api/chat/receive', user)
+		if(chats.success) {
+			user.last_received = new Date()
+			const messages = chats.messages
+			messages.forEach(async entry => {
+				let message = await decrypt(entry)
+				let sent = dateToString(new Date(chats[i].sent))
+				let timeNode = document.createElement('time')
+				let timeTextNode = document.createTextNode(sent)
+				timeNode.appendChild(timeTextNode)
+				
+				let line = document.createElement('div')
+	
+				let nameNode = document.createElement('div')
+				nameNode.style.color = chats[i].color
+				nameNode.style.fontWeight = 'bolder'
+				let nameTextNode = document.createTextNode(chats[i].name)
+				nameNode.appendChild(nameTextNode)
+				
+				let messageTextNode = document.createTextNode(message)
+	
+				let upperWrapper = document.createElement('div')
+	
+				upperWrapper.appendChild(nameNode)
+				upperWrapper.appendChild(timeNode)
+				line.appendChild(upperWrapper)
+				line.appendChild(messageTextNode)
+				chatWindow.appendChild(line)
+			});
 		}
 
 		return chats
@@ -208,13 +213,20 @@ export default function chat()
 
 	createKeys().
 	then(() => login()).
-	then(async () =>
-	{
-		intervalID = setInterval(() => receive(), 1000)
+	then(async () => {
+		while(true) {
+			let chatWindow = document.querySelector('.chatWindow')
+	
+			if(chatWindow == null) {
+				break
+			}
+
+			await receive()
+			await sleep(1000)
+		}
 	})
 
-	function setNameAndColor()
-	{
+	function setNameAndColor() {
 		user.name = generateName()
 		user.color = generateColor()
 
@@ -246,8 +258,8 @@ export default function chat()
 		fetchPost('/api/chat/send', messages).
 			catch(() => 
 			{
-				alert('Your session has timed out.\n\nThe page will now be refreshed and you will be given a brand new identity.')
-				window.location = window.location
+				//alert('Your session has timed out.\n\nThe page will now be refreshed and you will be given a brand new identity.')
+				//window.location = window.location
 			})
 
 		chatBox.value = ''
@@ -261,8 +273,6 @@ export default function chat()
 		}
 	}
 
-
-
 	setNameAndColor()
 
 	return (
@@ -271,7 +281,7 @@ export default function chat()
 				Fully encrypted and anonymous messaging. Your browser generates your keys. Messages self-destruct when received or after a minute. Chat updates once a second.
 			</header>
 			<div className={style.textWindow + ' chatWindow'}>
-
+			
 			</div>
 			<p className={style.loginInfo + ' loginInfo'}>
 				Your name will be displayed as: <span style={jsxColorStyle}> {user.name} </span>

@@ -1,14 +1,8 @@
 'use strict'
 
-let output = 
-{
-	swcMinifier: true,
+const output = {
 	reactStrictMode: true,
 	poweredByHeader: false,
-	/*experimental: 
-	{
-		esmExternals: true,
-	},*/
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
    // config.output.hashFunction = 'sha1'
     return config

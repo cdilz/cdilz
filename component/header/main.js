@@ -4,14 +4,6 @@ import style from './header.main.module.css'
 
 export default function header()
 {
-	/*
-	let fullClass = styles.header
-
-	if(typeof className === 'string')
-	{
-		fullClass += ' ' + className
-	}
-*/
 	return (
 		<header className={style.header + ' noselect'}>
 			<nav className={style.logo + ' ' + style.nav}>
